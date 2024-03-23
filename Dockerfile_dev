@@ -1,0 +1,48 @@
+FROM golang:1.21-alpine as builder
+
+WORKDIR /build
+
+ADD go.mod .
+ADD go.sum .
+# We need the .git folder for the git tag and commit hash for the Runtime API endpoint
+ADD .git .
+
+RUN apk update && apk add protobuf gcc libc-dev git
+
+RUN go install \
+    github.com/oxisto/owl2proto/cmd/owl2proto \
+    github.com/srikrsna/protoc-gen-gotag
+
+RUN go install github.com/bufbuild/buf/cmd/buf@latest
+
+ADD . .
+
+RUN go generate ./...
+RUN go build -ldflags="-X clouditor.io/clouditor/v2/service.version=$(git describe --exact-match --tags --abbrev=0)" -o /build/engine ./cmd/engine
+RUN go build -ldflags="-X clouditor.io/clouditor/v2/service.version=$(git describe --exact-match --tags --abbrev=0)" -o /build/cl ./cmd/cli
+
+FROM alpine
+
+WORKDIR /app
+
+COPY --from=builder /build/engine .
+COPY --from=builder /build/cl .
+COPY --from=builder /build/catalogs ./catalogs
+COPY --from=builder /build/policies ./policies
+COPY --from=builder /build/service/orchestrator/metrics.json .
+
+# Expose port for rest gateway (For OAuth to work you also should publish this port when running the container image)
+EXPOSE 8080
+# Expose port for grpc
+EXPOSE 9090
+
+# ENTRYPOINT ["./engine", "--db-host=postgres", "--db-name=secguro-clouditor-dev", "--db-user-name=postgres", "--db-password=password"]
+
+EXPOSE 5173
+
+ENV AZURE_TENANT_ID=
+ENV AZURE_CLIENT_ID=
+ENV AZURE_CLIENT_SECRET=
+ENV AZURE_SUBSCRIPTION_ID=
+
+ENTRYPOINT ["./engine", "--db-in-memory", "--api-http-port=8089", "--service-oauth2-token-endpoint=http://localhost:8089/v1/auth/token", "--api-jwks-url=http://localhost:8089/v1/auth/certs", "--dashboard-url=http://localhost:5173", "--api-cors-allowed-origins=http://localhost:5173", "--discovery-provider=azure"]
