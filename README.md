@@ -1,4 +1,4 @@
-bar
+bar 6
 
 <img src="images/claudi.png" width="60%"/>
 
