@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: gomod
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"] # we are not interested in patch updates. this will still pull in security updates
