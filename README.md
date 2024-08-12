@@ -97,3 +97,7 @@ cl service discovery experimental update-resource \
 ### Command Completion
 
 The CLI offers command completion for most shells using the `cl completion` command. Specific instructions to install the shell completions can be accessed using `cl completion --help`.
+
+PAT=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
+
+API_KEY: cf804827861e13578281e8fb37c0ec5a
