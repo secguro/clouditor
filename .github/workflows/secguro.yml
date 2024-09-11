@@ -1,0 +1,15 @@
+name: Secguro
+
+on: ["pull_request"]
+
+jobs:
+  build:
+    name: Secguro
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment: default_environment
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check for Secguro Violations
+      run: wget 'https://secguro.github.io/secguro-cli/secguro' && chmod +x secguro && SECGURO_CI_TOKEN="${{ secrets.SECGURO_CI_TOKEN }}" ./secguro scan --tolerance 0
