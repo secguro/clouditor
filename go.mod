@@ -23,7 +23,7 @@ require (
 	golang.org/x/sync v0.6.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240123012728-ef4313101c80
 	google.golang.org/grpc v1.62.0
-	google.golang.org/protobuf v1.33.0
+	google.golang.org/protobuf v1.34.1
 	gorm.io/driver/postgres v1.5.0
 	gorm.io/gorm v1.25.7
 )
@@ -72,7 +72,7 @@ require (
 require (
 	github.com/google/addlicense v1.1.0
 	github.com/oxisto/owl2proto v0.1.4
-	github.com/srikrsna/protoc-gen-gotag v0.6.2
+	github.com/srikrsna/protoc-gen-gotag v1.0.2
 )
 
 // indirect dependencies
@@ -132,7 +132,6 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lmittmann/tint v1.0.3 // indirect
-	github.com/lyft/protoc-gen-star v0.6.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
@@ -193,4 +192,10 @@ require (
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
+)
+
+require (
+	github.com/lyft/protoc-gen-star/v2 v2.0.3 // indirect
+	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/tools v0.15.0 // indirect
 )
